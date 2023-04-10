@@ -388,7 +388,7 @@ namespace Calendar
 		
 		private int _meetingID;
 		
-		private int _hostID;
+		private int _memberID;
 		
 		private EntityRef<Meeting> _Meeting;
 		
@@ -402,8 +402,8 @@ namespace Calendar
     partial void OnidChanged();
     partial void OnmeetingIDChanging(int value);
     partial void OnmeetingIDChanged();
-    partial void OnhostIDChanging(int value);
-    partial void OnhostIDChanged();
+    partial void OnmemberIDChanging(int value);
+    partial void OnmemberIDChanged();
     #endregion
 		
 		public MeetingMember()
@@ -457,26 +457,26 @@ namespace Calendar
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hostID", DbType="Int NOT NULL")]
-		public int hostID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_memberID", DbType="Int NOT NULL")]
+		public int memberID
 		{
 			get
 			{
-				return this._hostID;
+				return this._memberID;
 			}
 			set
 			{
-				if ((this._hostID != value))
+				if ((this._memberID != value))
 				{
 					if (this._User.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnhostIDChanging(value);
+					this.OnmemberIDChanging(value);
 					this.SendPropertyChanging();
-					this._hostID = value;
-					this.SendPropertyChanged("hostID");
-					this.OnhostIDChanged();
+					this._memberID = value;
+					this.SendPropertyChanged("memberID");
+					this.OnmemberIDChanged();
 				}
 			}
 		}
@@ -515,7 +515,7 @@ namespace Calendar
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_MeetingMember", Storage="_User", ThisKey="hostID", OtherKey="id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_MeetingMember", Storage="_User", ThisKey="memberID", OtherKey="id", IsForeignKey=true)]
 		public User User
 		{
 			get
@@ -538,11 +538,11 @@ namespace Calendar
 					if ((value != null))
 					{
 						value.MeetingMembers.Add(this);
-						this._hostID = value.id;
+						this._memberID = value.id;
 					}
 					else
 					{
-						this._hostID = default(int);
+						this._memberID = default(int);
 					}
 					this.SendPropertyChanged("User");
 				}
@@ -879,6 +879,8 @@ namespace Calendar
 		
 		private string _Name;
 		
+		private string _PassWord;
+		
 		private EntitySet<Event> _Events;
 		
 		private EntitySet<MeetingMember> _MeetingMembers;
@@ -893,6 +895,8 @@ namespace Calendar
     partial void OnidChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
+    partial void OnPassWordChanging(string value);
+    partial void OnPassWordChanged();
     #endregion
 		
 		public User()
@@ -943,6 +947,26 @@ namespace Calendar
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PassWord", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string PassWord
+		{
+			get
+			{
+				return this._PassWord;
+			}
+			set
+			{
+				if ((this._PassWord != value))
+				{
+					this.OnPassWordChanging(value);
+					this.SendPropertyChanging();
+					this._PassWord = value;
+					this.SendPropertyChanged("PassWord");
+					this.OnPassWordChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Event", Storage="_Events", ThisKey="id", OtherKey="hostID")]
 		public EntitySet<Event> Events
 		{
@@ -956,7 +980,7 @@ namespace Calendar
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_MeetingMember", Storage="_MeetingMembers", ThisKey="id", OtherKey="hostID")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_MeetingMember", Storage="_MeetingMembers", ThisKey="id", OtherKey="memberID")]
 		public EntitySet<MeetingMember> MeetingMembers
 		{
 			get

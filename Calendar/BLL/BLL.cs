@@ -12,7 +12,48 @@ namespace Calendar.BLL
     public class Bll
     {
 
-        public bool AddEvent(Event d)
+        public bool AddUser(User u)
+        {
+            using (DataClasses1DataContext db = new DataClasses1DataContext())
+            {
+                int lastID = 0;
+                foreach (Event i in db.Events)
+                {
+                    lastID = i.id;
+                }
+
+                u.id = lastID + 1;
+                foreach (User i in db.Users)
+                {
+                    if (u.Name == i.Name)
+                    {
+                        if (u.PassWord == i.PassWord)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                db.Users.InsertOnSubmit(u);
+                db.SubmitChanges();
+                return true;
+            }
+        }
+
+        public bool CheckUser(string username , string pass)
+        {
+            using (DataClasses1DataContext db = new DataClasses1DataContext())
+            { 
+                foreach(User i in db.Users)
+                {
+                    if(username == i.Name && i.PassWord == pass) return false;
+                }
+
+                return false;
+            }
+
+
+         }
+            public bool AddEvent(Event d)
         {
             using (DataClasses1DataContext db = new DataClasses1DataContext())
             {
@@ -220,7 +261,7 @@ namespace Calendar.BLL
                 {
                     id = lastID+1,
                     meetingID = idMeetingjoin,
-                    hostID  = userID, 
+                    memberID  = userID, 
                     
                 };
                 db.MeetingMembers.InsertOnSubmit(mb);

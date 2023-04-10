@@ -17,9 +17,9 @@
     <Type Name="MeetingMember">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="meetingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="hostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Meeting_MeetingMember" Member="Meeting" ThisKey="meetingID" OtherKey="id" Type="Meeting" IsForeignKey="true" />
-      <Association Name="User_MeetingMember" Member="User" ThisKey="hostID" OtherKey="id" Type="User" IsForeignKey="true" />
+      <Association Name="User_MeetingMember" Member="User" ThisKey="memberID" OtherKey="id" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Meetings" Member="Meetings">
@@ -40,8 +40,9 @@
     <Type Name="User">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="PassWord" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Association Name="User_Event" Member="Events" ThisKey="id" OtherKey="hostID" Type="Event" />
-      <Association Name="User_MeetingMember" Member="MeetingMembers" ThisKey="id" OtherKey="hostID" Type="MeetingMember" />
+      <Association Name="User_MeetingMember" Member="MeetingMembers" ThisKey="id" OtherKey="memberID" Type="MeetingMember" />
       <Association Name="User_Meeting" Member="Meetings" ThisKey="id" OtherKey="hostID" Type="Meeting" />
     </Type>
   </Table>
