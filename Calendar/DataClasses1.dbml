@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QLM" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-PFK2FVL\SQLSERVER_NHUTLE;Initial Catalog=QLM;Integrated Security=True" SettingsObjectName="Calendar.Properties.Settings" SettingsPropertyName="QLMConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Events" Member="Events">
+    <Type Name="Event">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="dateStart" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="dateFinish" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="timeStart" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="timeFinish" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="hostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_Event" Member="User" ThisKey="hostID" OtherKey="id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MeetingMembers" Member="MeetingMembers">
+    <Type Name="MeetingMember">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="meetingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="hostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Meeting_MeetingMember" Member="Meeting" ThisKey="meetingID" OtherKey="id" Type="Meeting" IsForeignKey="true" />
+      <Association Name="User_MeetingMember" Member="User" ThisKey="hostID" OtherKey="id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Meetings" Member="Meetings">
+    <Type Name="Meeting">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="dateStart" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="dateFinish" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="timeStart" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="timeFinish" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="hostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Meeting_MeetingMember" Member="MeetingMembers" ThisKey="id" OtherKey="meetingID" Type="MeetingMember" />
+      <Association Name="User_Meeting" Member="User" ThisKey="hostID" OtherKey="id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="User_Event" Member="Events" ThisKey="id" OtherKey="hostID" Type="Event" />
+      <Association Name="User_MeetingMember" Member="MeetingMembers" ThisKey="id" OtherKey="hostID" Type="MeetingMember" />
+      <Association Name="User_Meeting" Member="Meetings" ThisKey="id" OtherKey="hostID" Type="Meeting" />
+    </Type>
+  </Table>
+</Database>
