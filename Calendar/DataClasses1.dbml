@@ -10,6 +10,7 @@
       <Column Name="timeStart" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="timeFinish" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="hostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Event_Remind" Member="Reminds" ThisKey="id" OtherKey="eventID" Type="Remind" />
       <Association Name="User_Event" Member="User" ThisKey="hostID" OtherKey="id" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
@@ -33,6 +34,7 @@
       <Column Name="timeFinish" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="hostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Meeting_MeetingMember" Member="MeetingMembers" ThisKey="id" OtherKey="meetingID" Type="MeetingMember" />
+      <Association Name="Meeting_Remind" Member="Reminds" ThisKey="id" OtherKey="meetingID" Type="Remind" />
       <Association Name="User_Meeting" Member="User" ThisKey="hostID" OtherKey="id" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
@@ -44,6 +46,15 @@
       <Association Name="User_Event" Member="Events" ThisKey="id" OtherKey="hostID" Type="Event" />
       <Association Name="User_MeetingMember" Member="MeetingMembers" ThisKey="id" OtherKey="memberID" Type="MeetingMember" />
       <Association Name="User_Meeting" Member="Meetings" ThisKey="id" OtherKey="hostID" Type="Meeting" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Remind" Member="Reminds">
+    <Type Name="Remind">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="eventID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="meetingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Event_Remind" Member="Event" ThisKey="eventID" OtherKey="id" Type="Event" IsForeignKey="true" />
+      <Association Name="Meeting_Remind" Member="Meeting" ThisKey="meetingID" OtherKey="id" Type="Meeting" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -48,7 +48,7 @@ namespace Calendar.BLL
                     if(username == i.Name && i.PassWord == pass) return false;
                 }
 
-                return false;
+                return true;
             }
 
 
@@ -268,6 +268,34 @@ namespace Calendar.BLL
                 db.SubmitChanges();
             };
             return false;
+        }
+
+        public bool AddReminder(Remind m)
+        {
+            using (DataClasses1DataContext db = new DataClasses1DataContext())
+            {
+                int lastID = 0;
+                foreach (Remind i in db.Reminds)
+                {
+                    lastID = i.id;
+                }
+
+                m.id = lastID+1;
+
+                foreach (Remind i in db.Reminds)
+                {
+                    if(i.meetingID == m.meetingID || i.eventID == m.eventID)
+                    {
+                        return false;
+                    }
+                }
+
+                db.Reminds.InsertOnSubmit(m);
+                db.SubmitChanges();
+                return true;
+            };
+
+            
         }
     }
 }

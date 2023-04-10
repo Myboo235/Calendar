@@ -33,7 +33,7 @@
         <classShapeMoniker Id="715dd210-37f2-4967-bc12-935e01a2221a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(3 : 5.31814697265625); (5.625 : 5.31814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3 : 5.28125); (5.625 : 5.28125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DataClasses1DataContext/User/User_Event" />
       <nodes>
         <classShapeMoniker Id="c8a253a7-81ab-486b-af6a-77279662cc9c" />
@@ -52,6 +52,26 @@
       <nodes>
         <classShapeMoniker Id="c8a253a7-81ab-486b-af6a-77279662cc9c" />
         <classShapeMoniker Id="e4926766-6a4e-4c17-97e0-df95c57ad724" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="40ef71b2-5791-4b48-9842-e79589db2cb1" absoluteBounds="8.25, 6.25, 2, 1.3862939453125">
+      <DataClassMoniker Name="/DataClasses1DataContext/Remind" />
+      <nestedChildShapes>
+        <elementListCompartment Id="85f3714c-4d7f-41e8-915b-e96b95ad3d87" absoluteBounds="8.265, 6.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(7.625 : 6.61140055338542); (8.25 : 6.61140055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Event/Event_Remind" />
+      <nodes>
+        <classShapeMoniker Id="dd2086b9-ee40-4d68-8269-4e0d1238767f" />
+        <classShapeMoniker Id="40ef71b2-5791-4b48-9842-e79589db2cb1" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.5 : 8.67954802604167); (9.25 : 8.67954802604167); (9.25 : 7.6362939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Meeting/Meeting_Remind" />
+      <nodes>
+        <classShapeMoniker Id="e4926766-6a4e-4c17-97e0-df95c57ad724" />
+        <classShapeMoniker Id="40ef71b2-5791-4b48-9842-e79589db2cb1" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

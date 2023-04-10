@@ -42,6 +42,9 @@ namespace Calendar
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertRemind(Remind instance);
+    partial void UpdateRemind(Remind instance);
+    partial void DeleteRemind(Remind instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -105,6 +108,14 @@ namespace Calendar
 				return this.GetTable<User>();
 			}
 		}
+		
+		public System.Data.Linq.Table<Remind> Reminds
+		{
+			get
+			{
+				return this.GetTable<Remind>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Events")]
@@ -128,6 +139,8 @@ namespace Calendar
 		private string _timeFinish;
 		
 		private int _hostID;
+		
+		private EntitySet<Remind> _Reminds;
 		
 		private EntityRef<User> _User;
 		
@@ -155,6 +168,7 @@ namespace Calendar
 		
 		public Event()
 		{
+			this._Reminds = new EntitySet<Remind>(new Action<Remind>(this.attach_Reminds), new Action<Remind>(this.detach_Reminds));
 			this._User = default(EntityRef<User>);
 			OnCreated();
 		}
@@ -323,6 +337,19 @@ namespace Calendar
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Event_Remind", Storage="_Reminds", ThisKey="id", OtherKey="eventID")]
+		public EntitySet<Remind> Reminds
+		{
+			get
+			{
+				return this._Reminds;
+			}
+			set
+			{
+				this._Reminds.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Event", Storage="_User", ThisKey="hostID", OtherKey="id", IsForeignKey=true)]
 		public User User
 		{
@@ -375,6 +402,18 @@ namespace Calendar
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Reminds(Remind entity)
+		{
+			this.SendPropertyChanging();
+			entity.Event = this;
+		}
+		
+		private void detach_Reminds(Remind entity)
+		{
+			this.SendPropertyChanging();
+			entity.Event = null;
 		}
 	}
 	
@@ -594,6 +633,8 @@ namespace Calendar
 		
 		private EntitySet<MeetingMember> _MeetingMembers;
 		
+		private EntitySet<Remind> _Reminds;
+		
 		private EntityRef<User> _User;
 		
     #region Extensibility Method Definitions
@@ -621,6 +662,7 @@ namespace Calendar
 		public Meeting()
 		{
 			this._MeetingMembers = new EntitySet<MeetingMember>(new Action<MeetingMember>(this.attach_MeetingMembers), new Action<MeetingMember>(this.detach_MeetingMembers));
+			this._Reminds = new EntitySet<Remind>(new Action<Remind>(this.attach_Reminds), new Action<Remind>(this.detach_Reminds));
 			this._User = default(EntityRef<User>);
 			OnCreated();
 		}
@@ -802,6 +844,19 @@ namespace Calendar
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Meeting_Remind", Storage="_Reminds", ThisKey="id", OtherKey="meetingID")]
+		public EntitySet<Remind> Reminds
+		{
+			get
+			{
+				return this._Reminds;
+			}
+			set
+			{
+				this._Reminds.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Meeting", Storage="_User", ThisKey="hostID", OtherKey="id", IsForeignKey=true)]
 		public User User
 		{
@@ -863,6 +918,18 @@ namespace Calendar
 		}
 		
 		private void detach_MeetingMembers(MeetingMember entity)
+		{
+			this.SendPropertyChanging();
+			entity.Meeting = null;
+		}
+		
+		private void attach_Reminds(Remind entity)
+		{
+			this.SendPropertyChanging();
+			entity.Meeting = this;
+		}
+		
+		private void detach_Reminds(Remind entity)
 		{
 			this.SendPropertyChanging();
 			entity.Meeting = null;
@@ -1060,6 +1127,198 @@ namespace Calendar
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Remind")]
+	public partial class Remind : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Nullable<int> _eventID;
+		
+		private System.Nullable<int> _meetingID;
+		
+		private EntityRef<Event> _Event;
+		
+		private EntityRef<Meeting> _Meeting;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OneventIDChanging(System.Nullable<int> value);
+    partial void OneventIDChanged();
+    partial void OnmeetingIDChanging(System.Nullable<int> value);
+    partial void OnmeetingIDChanged();
+    #endregion
+		
+		public Remind()
+		{
+			this._Event = default(EntityRef<Event>);
+			this._Meeting = default(EntityRef<Meeting>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_eventID", DbType="Int")]
+		public System.Nullable<int> eventID
+		{
+			get
+			{
+				return this._eventID;
+			}
+			set
+			{
+				if ((this._eventID != value))
+				{
+					if (this._Event.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OneventIDChanging(value);
+					this.SendPropertyChanging();
+					this._eventID = value;
+					this.SendPropertyChanged("eventID");
+					this.OneventIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_meetingID", DbType="Int")]
+		public System.Nullable<int> meetingID
+		{
+			get
+			{
+				return this._meetingID;
+			}
+			set
+			{
+				if ((this._meetingID != value))
+				{
+					if (this._Meeting.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnmeetingIDChanging(value);
+					this.SendPropertyChanging();
+					this._meetingID = value;
+					this.SendPropertyChanged("meetingID");
+					this.OnmeetingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Event_Remind", Storage="_Event", ThisKey="eventID", OtherKey="id", IsForeignKey=true)]
+		public Event Event
+		{
+			get
+			{
+				return this._Event.Entity;
+			}
+			set
+			{
+				Event previousValue = this._Event.Entity;
+				if (((previousValue != value) 
+							|| (this._Event.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Event.Entity = null;
+						previousValue.Reminds.Remove(this);
+					}
+					this._Event.Entity = value;
+					if ((value != null))
+					{
+						value.Reminds.Add(this);
+						this._eventID = value.id;
+					}
+					else
+					{
+						this._eventID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Event");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Meeting_Remind", Storage="_Meeting", ThisKey="meetingID", OtherKey="id", IsForeignKey=true)]
+		public Meeting Meeting
+		{
+			get
+			{
+				return this._Meeting.Entity;
+			}
+			set
+			{
+				Meeting previousValue = this._Meeting.Entity;
+				if (((previousValue != value) 
+							|| (this._Meeting.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Meeting.Entity = null;
+						previousValue.Reminds.Remove(this);
+					}
+					this._Meeting.Entity = value;
+					if ((value != null))
+					{
+						value.Reminds.Add(this);
+						this._meetingID = value.id;
+					}
+					else
+					{
+						this._meetingID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Meeting");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

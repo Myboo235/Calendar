@@ -11,6 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Calendar.BLL;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Calendar.View;
 
 namespace Calendar
 {
@@ -82,6 +83,7 @@ namespace Calendar
             LoadingData();
         }
 
+        private int remindID;
         private void button2_Click(object sender, EventArgs e)
         {
             if (Check())
@@ -114,7 +116,7 @@ namespace Calendar
                     }
                     else
                     {
-                        const string message = "There is a evant here . Do you add";
+                        const string message = "There is a evant here . Do you just add it";
                         const string caption = "Joining group";
                         var result = MessageBox.Show(message, caption,
                                                      MessageBoxButtons.YesNo,
@@ -130,6 +132,9 @@ namespace Calendar
                             //MessageBox.Show("Join meeting");
                         }
                     }
+
+                    button6.Enabled= true;
+                    remindID = d.id;
                 }
                 //Meeting
                 else
@@ -183,6 +188,9 @@ namespace Calendar
                     {
                         MessageBox.Show("There is another Event !!!");
                     }
+
+                    button6.Enabled = true;
+                    remindID = d.id;
                 }
             }
             LoadingData();
@@ -333,6 +341,51 @@ namespace Calendar
                 }
                 
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Sign out");
+            Dispose();
+            Form2 f = new Form2();f.Show();
+            if(f.IsDisposed) { MessageBox.Show("form 2 disapse"); }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if(radioButton1.Checked)
+            {
+                Remind r = new Remind
+                {
+                    eventID= remindID,
+                };
+                Bll b = new Bll();
+                if (b.AddReminder(r))
+                {
+                    MessageBox.Show("Remind Event successfully");
+                }
+                else
+                {
+                    MessageBox.Show("Error");
+                }
+            }
+            if (radioButton2.Checked)
+            {
+                Remind r = new Remind
+                {
+                    meetingID = remindID,
+                };
+                Bll b = new Bll();
+                if (b.AddReminder(r))
+                {
+                    MessageBox.Show("Remind Meeting successfully");
+                }
+                else
+                {
+                    MessageBox.Show("Error");
+                }
+            }
+
         }
     }
 }

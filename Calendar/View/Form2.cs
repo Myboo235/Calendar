@@ -37,8 +37,7 @@ namespace Calendar.View
                                 MessageBox.Show("Sign In Successfully");
                                 Hide();
                                 Form1 f = new Form1(richTextBox1.Text);
-                                f.ShowDialog();
-                                Close();
+                                f.Show();
                                 return;
                             }
                             
@@ -83,10 +82,15 @@ namespace Calendar.View
         private void richTextBox2_TextChanged(object sender, EventArgs e)
         {
             Bll b = new Bll();
-            if (b.CheckUser(richTextBox1.Text, richTextBox2.Text))
+            if (!b.CheckUser(richTextBox1.Text, richTextBox2.Text))
             {
                 MessageBox.Show("Please choose other name or pass because the data have already in database");
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(1);
         }
     }
 }
